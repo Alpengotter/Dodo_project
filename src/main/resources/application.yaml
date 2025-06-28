@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: Dodo_project
+  profiles:
+    default: local
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    enabled: true
+
+management:
+  metrics:
+    tags:
+      application: Dodo_project
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+
+
+jwt:
+  secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration-access: ${ACCOUNT_SERVICE_JWT_EXPIRATION_ACCESS:604800}
+server:
+  port: 8080
