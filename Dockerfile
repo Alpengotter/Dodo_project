@@ -41,4 +41,4 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package -DskipTests dependency
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "target/Dodo-project-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/Dodo_project-0.0.1-SNAPSHOT.jar"]

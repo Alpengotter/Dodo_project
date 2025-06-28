@@ -1,6 +1,6 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://host.docker.internal:5433/dodo_db_postgres
+    url: jdbc:postgresql://host.docker.internal:5433/dodo_db
     username: postgres
     password: ${DATABASE_PASSWORD}

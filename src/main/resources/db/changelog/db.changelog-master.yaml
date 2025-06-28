@@ -32,9 +32,3 @@ databaseChangeLog:
   - include:
       file: db/migration/change_history_table.sql
       relativeToChangelogFile: false
-  - include:
-      file: db/migration/change_clinics_table.sql
-      relativeToChangelogFile: false
-  - include:
-      file: db/migration/delete_clinics.sql
-      relativeToChangelogFile: false
