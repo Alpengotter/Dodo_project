@@ -39,6 +39,8 @@ public class OrdersEntity {
     private String status;
     @Column(name = "tilda_id")
     private String tildaId;
+    @Column(name = "employee_name")
+    private String employeeName;
     @Column(name = "total")
     private Integer total;
 

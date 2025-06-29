@@ -18,6 +18,7 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface OrderMapper {
     @Mapping(target = "employee", source = "orderDto.email", qualifiedByName = "mapEmailToId")
+    @Mapping(target = "employeeName", source = "orderDto.email")
     @Mapping(target = "tildaId", source = "orderDto.id")
     @Mapping(target = "total", source = "orderDto.total")
     @Mapping(target = "status", constant = "ACTIVE")
@@ -26,7 +27,7 @@ public interface OrderMapper {
     OrdersEntity toOrderEntity(OrderWebhookDto orderDto);
 
 //    @Mapping(target = "email", source = "orderEntity.employee", qualifiedByName = "mapEmployeeToEmail")
-    @Mapping(target = "email", source = "orderEntity.employee.email")
+    @Mapping(target = "email", constant = "null")
     OrderResponseDto toOrderResponseDto(OrdersEntity orderEntity);
 
     List<OrderResponseDto> toOrderDtoList(List<OrdersEntity> ordersEntities);

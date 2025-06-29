@@ -11,4 +11,5 @@ public class OrderResponseDto {
     private String total;
     private String email;
     private String status;
+    private String employeeName;
 }

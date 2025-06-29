@@ -27,12 +27,13 @@ public class OrderMapperService {
 
     @Named("mapEmailToId")
     public UserEntity mapEmailToId(String email) {
-        Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(email);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new LemonBankException(ErrorType.USER_NOT_FOUND);
-        }
+//        Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(email);
+//        if (user.isPresent()) {
+//            return user.get();
+//        } else {
+//            throw new LemonBankException(ErrorType.USER_NOT_FOUND);
+//        }
+        return null;
     }
 
     @Named("mapDateFromString")
