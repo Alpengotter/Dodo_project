@@ -28,9 +28,9 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
     private List<String> allowedOrigins = List.of(
-        "https://store.dodo.dev/",
-        "dodo.motivora.ru",
-        "project5320249.tilda.ws");
+        "https://store.dodo.dev",
+        "https://dodo.motivora.ru",
+        "https://project5320249.tilda.ws");
 
     @Bean
     PasswordEncoder passwordEncoder() {
