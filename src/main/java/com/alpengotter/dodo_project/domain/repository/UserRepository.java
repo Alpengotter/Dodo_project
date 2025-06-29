@@ -15,6 +15,22 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("select u from UserEntity u where u.email = lower(:email)")
     Optional<UserEntity> findByEmailIgnoreCase(String email);
 
+    @Query("select u from UserEntity u where "
+        + "u.isActive = true "
+        + "and lower(u.firstName) like lower(concat('%', :firstParameter, '%')) "
+        + "and lower(u.lastName) like lower(concat('%', :secondParameter, '%'))")
+    List<UserEntity> findByNameAndLastName(String firstParameter, String secondParameter);
+
+    @Query("select u from UserEntity u where "
+        + "u.isActive = true "
+        + "and lower(u.firstName) like lower(concat('%', :firstName, '%'))")
+    List<UserEntity> findByFirstName(String firstName);
+
+    @Query("select u from UserEntity u where "
+        + "u.isActive = true "
+        + "and lower(u.lastName) like lower(concat('%', :lastName, '%'))")
+    List<UserEntity> findByLastName(String lastName);
+
     Optional<UserEntity> findByEmailContainingIgnoreCaseAndIsActiveIsTrue(String email);
 
     @Query(value = "select u from UserEntity u where u.isActive = true order by u.lastName asc",

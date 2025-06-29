@@ -72,6 +72,12 @@ public class UserController {
         return userService.getUserByParameter(searchParameter, clinicIds, pageable);
     }
 
+    @GetMapping("/find-by-first-and-last-name")
+    public List<UserResponseDto> getEmployeeByFirstNameOrLastName(
+        @RequestParam("searchParameter") String searchParameter) {
+        return userService.getEmployeeByFirstNameOrLastName(searchParameter);
+    }
+
     @PostMapping("")
     public UserResponseDto postNewUser(@RequestBody UserBaseDto userBaseDto) {
         return userService.postNewUser(userBaseDto);
