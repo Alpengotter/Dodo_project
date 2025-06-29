@@ -66,20 +66,20 @@ public class OrdersService {
         ordersEntity.setStatus(status);
         OrdersEntity saved = ordersRepository.save(ordersEntity);
 
-        if (status.equals("ACCEPTED")) {
-            analitiqueService.saveAnalitique(AnalitiqueType.ACCEPT_ORDER.getMessage(),
-                -ordersEntity.getTotal(),
-                "lemons");
-            UserEntity employee = ordersEntity.getEmployee();
-            Integer employeeLemons = employee.getLemons();
-            employee.setLemons(employeeLemons - ordersEntity.getTotal());
-            userRepository.saveAndFlush(employee);
-            historyService.addOrderInHistory(saved);
-        } else {
-            analitiqueService.saveAnalitique(AnalitiqueType.DECLINE_ORDER.getMessage(),
-                ordersEntity.getTotal(),
-                "lemons");
-        }
+//        if (status.equals("ACCEPTED")) {
+//            analitiqueService.saveAnalitique(AnalitiqueType.ACCEPT_ORDER.getMessage(),
+//                -ordersEntity.getTotal(),
+//                "lemons");
+//            UserEntity employee = ordersEntity.getEmployee();
+//            Integer employeeLemons = employee.getLemons();
+//            employee.setLemons(employeeLemons - ordersEntity.getTotal());
+//            userRepository.saveAndFlush(employee);
+//            historyService.addOrderInHistory(saved);
+//        } else {
+//            analitiqueService.saveAnalitique(AnalitiqueType.DECLINE_ORDER.getMessage(),
+//                ordersEntity.getTotal(),
+//                "lemons");
+//        }
 
         return orderMapper.toOrderResponseDto(saved);
     }

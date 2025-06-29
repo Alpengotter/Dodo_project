@@ -319,4 +319,8 @@ public class UserService {
         }
         return userMapper.toListUserResponseDto(result);
     }
+
+    public List<UserResponseDto> getEmployeesOpen(Pageable pageable) {
+        return null;
+    }
 }

@@ -72,6 +72,12 @@ public class UserController {
         return userService.getUserByParameter(searchParameter, clinicIds, pageable);
     }
 
+    @GetMapping("/find-all-open")
+    public List<UserResponseDto> getEmployeesOpen(
+        @PageableDefault(sort = "firstName", direction = Sort.Direction.ASC, size = Integer.MAX_VALUE) Pageable pageable) {
+        return userService.getEmployeesOpen(pageable);
+    }
+
     @GetMapping("/find-by-first-and-last-name")
     public List<UserResponseDto> getEmployeeByFirstNameOrLastName(
         @RequestParam("searchParameter") String searchParameter) {
