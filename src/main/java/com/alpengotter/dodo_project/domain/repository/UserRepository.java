@@ -33,20 +33,17 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 //        + "and (ucm.clinic.id IN :clinicIds) "
 //        + "and u.isActive = true")
 @Query("SELECT DISTINCT u FROM UserEntity u " +
-    "JOIN u.userClinicMap ucm " +
-    "WHERE "
-    + "((:clinicIds is null or ucm.clinic.id IN :clinicIds) " +
-    "AND u.isActive = true " +
+    "WHERE " +
+    "u.isActive = true " +
     "AND (" +
     "   :firstName IS NULL OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :firstName, '%')) " +
     "   OR :lastName IS NULL OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :lastName, '%')) " +
     "   OR :surname IS NULL OR LOWER(u.surname) LIKE LOWER(CONCAT('%', :surname, '%'))" +
-    "))")
+    ")")
     Page<UserEntity> findActiveUsersByFullNameAndClinics(
         String firstName,
         String lastName,
         String surname,
-        Integer[] clinicIds,
         Pageable pageable);
     Optional<UserEntity> findByIdAndIsActiveIsTrue(Integer id);
 

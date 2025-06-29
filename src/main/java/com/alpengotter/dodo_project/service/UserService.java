@@ -87,7 +87,7 @@ public class UserService {
         log.info("Find by Name");
         Page<UserEntity> usersByFirstOrLastName =
             userRepository.findActiveUsersByFullNameAndClinics(
-                trimParameter, trimParameter, trimParameter, clinicIds, pageable);
+                trimParameter, trimParameter, trimParameter, pageable);
         if (usersByFirstOrLastName.isEmpty()) {
             throw new LemonBankException(ErrorType.USER_NOT_FOUND);
         }
