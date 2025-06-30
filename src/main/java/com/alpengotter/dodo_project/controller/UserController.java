@@ -4,6 +4,7 @@ import com.alpengotter.dodo_project.domain.dto.StatResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserBaseDto;
 import com.alpengotter.dodo_project.domain.dto.UserCurrencyMultipleUpdateDto;
 import com.alpengotter.dodo_project.domain.dto.UserCurrencyUpdateDto;
+import com.alpengotter.dodo_project.domain.dto.UserLowResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserStatusMultipleUpdateDto;
 import com.alpengotter.dodo_project.domain.dto.UserStatusUpdateDto;
@@ -73,9 +74,10 @@ public class UserController {
     }
 
     @GetMapping("/find-all-open")
-    public List<UserResponseDto> getEmployeesOpen(
-        @PageableDefault(sort = "firstName", direction = Sort.Direction.ASC, size = Integer.MAX_VALUE) Pageable pageable) {
-        return userService.getEmployeesOpen(pageable);
+    public List<UserLowResponseDto> getEmployeesOpen(
+        @RequestParam("searchParameter") String searchParameter,
+        @PageableDefault(sort = "lastName", direction = Sort.Direction.ASC, size = Integer.MAX_VALUE) Pageable pageable) {
+        return userService.getEmployeesOpen(searchParameter, pageable);
     }
 
     @GetMapping("/find-by-first-and-last-name")

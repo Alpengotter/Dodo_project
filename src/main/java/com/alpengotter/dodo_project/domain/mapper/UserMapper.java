@@ -3,6 +3,7 @@ package com.alpengotter.dodo_project.domain.mapper;
 
 import com.alpengotter.dodo_project.domain.dto.UserBaseDto;
 import com.alpengotter.dodo_project.domain.dto.UserExcelDto;
+import com.alpengotter.dodo_project.domain.dto.UserLowResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserResponseDto;
 import com.alpengotter.dodo_project.domain.entity.UserEntity;
 import com.alpengotter.dodo_project.domain.mapper.service.UserMapperService;
@@ -23,6 +24,9 @@ public interface UserMapper {
     List<UserResponseDto> toListUserResponseDto(List<UserEntity> entities);
     @Mapping(target = "isActive", source = "userBaseDto.isActive", defaultValue = "true")
     UserEntity toUserEntity(UserBaseDto userBaseDto);
+
+    UserLowResponseDto toUserLowResponseDto(UserEntity entity);
+    List<UserLowResponseDto> toListUserLowResponseDto(Page<UserEntity> entities);
 
     @Mapping(target = "name", source = "userEntity", qualifiedByName = "mapFullName")
     @Mapping(target = "clinic", source = "userEntity", qualifiedByName = "mapClinics")

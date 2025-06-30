@@ -61,6 +61,20 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
         String lastName,
         String surname,
         Pageable pageable);
+
+    @Query("SELECT DISTINCT u FROM UserEntity u " +
+        "WHERE " +
+        "u.isActive = true " +
+        "AND (" +
+        "   :firstName IS NULL OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :firstName, '%')) " +
+        "   OR :lastName IS NULL OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :lastName, '%')) " +
+        "   OR :jobTitle IS NULL OR LOWER(u.jobTitle) LIKE LOWER(CONCAT('%', :jobTitle, '%'))" +
+        ")")
+    Page<UserEntity> findActiveUsersByFullNameOrJobTitle(
+        String firstName,
+        String lastName,
+        String jobTitle,
+        Pageable pageable);
     Optional<UserEntity> findByIdAndIsActiveIsTrue(Integer id);
 
     @Modifying

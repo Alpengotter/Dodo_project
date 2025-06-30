@@ -4,6 +4,7 @@ import com.alpengotter.dodo_project.domain.dto.StatResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserBaseDto;
 import com.alpengotter.dodo_project.domain.dto.UserCurrencyMultipleUpdateDto;
 import com.alpengotter.dodo_project.domain.dto.UserCurrencyUpdateDto;
+import com.alpengotter.dodo_project.domain.dto.UserLowResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserResponseDto;
 import com.alpengotter.dodo_project.domain.dto.UserStatusMultipleUpdateDto;
 import com.alpengotter.dodo_project.domain.dto.UserStatusUpdateDto;
@@ -320,7 +321,14 @@ public class UserService {
         return userMapper.toListUserResponseDto(result);
     }
 
-    public List<UserResponseDto> getEmployeesOpen(Pageable pageable) {
-        return null;
+    public List<UserLowResponseDto> getEmployeesOpen(String searchParameter, Pageable pageable) {
+        String trimParameter = StringUtils.trimToEmpty(searchParameter);
+        Page<UserEntity> usersByFirstOrLastName =
+            userRepository.findActiveUsersByFullNameOrJobTitle(
+                trimParameter, trimParameter, trimParameter, pageable);
+        if (usersByFirstOrLastName.isEmpty()) {
+            throw new LemonBankException(ErrorType.USER_NOT_FOUND);
+        }
+        return userMapper.toListUserLowResponseDto(usersByFirstOrLastName);
     }
 }

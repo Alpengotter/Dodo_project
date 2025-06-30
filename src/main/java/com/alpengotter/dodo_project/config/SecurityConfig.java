@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/login").anonymous()
                 .requestMatchers("/api/v1/employers/find-by-email-open/*").permitAll()
                 .requestMatchers("/api/v1/history/find-by-date-and-param").permitAll()
+                .requestMatchers("/api/v1/employers/find-all-open").permitAll()
                 .requestMatchers("/actuator/*").permitAll()
                 .requestMatchers("/api/v1/orders/create").permitAll()
                 .requestMatchers(
