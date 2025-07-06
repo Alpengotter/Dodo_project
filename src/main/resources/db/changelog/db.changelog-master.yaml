@@ -35,3 +35,6 @@ databaseChangeLog:
   - include:
       file: db/migration/add_orders_name_employee.sql
       relativeToChangelogFile: false
+  - include:
+      file: db/migration/add_extension_for_search.sql
+      relativeToChangelogFile: false

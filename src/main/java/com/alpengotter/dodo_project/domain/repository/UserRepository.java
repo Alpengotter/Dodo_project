@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
@@ -20,6 +21,65 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
         + "and lower(u.firstName) like lower(concat('%', :firstParameter, '%')) "
         + "and lower(u.lastName) like lower(concat('%', :secondParameter, '%'))")
     List<UserEntity> findByNameAndLastName(String firstParameter, String secondParameter);
+
+//    @Query(value = """
+//    SELECT * FROM users
+//    WHERE is_active = true AND (
+//        to_tsvector('russian', first_name || ' ' || last_name) @@
+//        plainto_tsquery('russian', :query)
+//        OR
+//        to_tsvector('russian', first_name) @@
+//        plainto_tsquery('russian', :query)
+//        OR
+//        to_tsvector('russian', last_name) @@
+//        plainto_tsquery('russian', :query)
+//    )
+//    ORDER BY GREATEST(
+//        ts_rank(to_tsvector('russian', first_name || ' ' || last_name),
+//                plainto_tsquery('russian', :query)),
+//        ts_rank(to_tsvector('russian', first_name),
+//                plainto_tsquery('russian', :query)),
+//        ts_rank(to_tsvector('russian', last_name),
+//                plainto_tsquery('russian', :query))
+//    ) DESC
+//    """,
+//        nativeQuery = true)
+@Query(value = """
+    WITH search_data AS (
+        SELECT 
+            :query AS raw_query,
+            plainto_tsquery('russian', :query) AS ts_query,
+            :query ~ '\\s' AS has_spaces
+    )
+    SELECT u.*, 
+           GREATEST(
+               /* Релевантность по полному имени */
+               COALESCE(similarity(u.first_name || ' ' || u.last_name, sd.raw_query), 0),
+               /* Релевантность по отдельным частям */
+               COALESCE(similarity(u.first_name, sd.raw_query), 0),
+               COALESCE(similarity(u.last_name, sd.raw_query), 0),
+               /* Релевантность полнотекстового поиска */
+               COALESCE(ts_rank(to_tsvector('russian', u.first_name || ' ' || u.last_name), sd.ts_query), 0) * 0.5
+           ) AS relevance
+    FROM users u, search_data sd
+    WHERE u.is_active = true AND (
+        /* Если запрос содержит пробелы - ищем по комбинации */
+        (sd.has_spaces AND similarity(u.first_name || ' ' || u.last_name, sd.raw_query) > 0.3)
+        OR
+        /* Иначе ищем по отдельности */
+        (NOT sd.has_spaces AND (
+            similarity(u.first_name, sd.raw_query) > 0.4 OR
+            similarity(u.last_name, sd.raw_query) > 0.4)
+        )
+        OR
+        /* Дублируем условия для полнотекстового поиска */
+        to_tsvector('russian', u.first_name || ' ' || u.last_name) @@ sd.ts_query
+    )
+    ORDER BY relevance DESC
+    LIMIT 100
+    """,
+    nativeQuery = true)
+    List<UserEntity> flexibleFindByNameAndLastName(@Param("query") String query);
 
     @Query("select u from UserEntity u where "
         + "u.isActive = true "

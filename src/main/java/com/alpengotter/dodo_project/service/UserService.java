@@ -301,23 +301,25 @@ public class UserService {
     public List<UserResponseDto> getEmployeeByFirstNameOrLastName(String searchParameter) {
         log.info("Start find by param:{}", searchParameter);
         String trimParameter = StringUtils.trimToEmpty(searchParameter);
-        String[] parameters = trimParameter.split(" ");
-        List<UserEntity> result = new ArrayList<>();
-        if (parameters.length == 2) {
-            List<UserEntity> byFirstNameAndLastName =
-                userRepository.findByNameAndLastName(parameters[0], parameters[1]);
-            List<UserEntity> byLastNameAndFirstName = userRepository.findByNameAndLastName(parameters[1],
-                parameters[0]);
-            result.addAll(byFirstNameAndLastName);
-            result.addAll(byLastNameAndFirstName);
-        } else if (parameters.length == 1) {
-            List<UserEntity> byFirstName = userRepository.findByFirstName(parameters[0]);
-            List<UserEntity> byLastName = userRepository.findByLastName(parameters[0]);
-            result.addAll(byFirstName);
-            result.addAll(byLastName);
-        } else {
-            throw new LemonBankException("Count searchParameters < 1 or > 2", ErrorType.SERVER_ERROR);
-        }
+
+        List<UserEntity> result = userRepository.flexibleFindByNameAndLastName(trimParameter);
+//        String[] parameters = trimParameter.split(" ");
+//        List<UserEntity> result = new ArrayList<>();
+//        if (parameters.length == 2) {
+//            List<UserEntity> byFirstNameAndLastName =
+//                userRepository.findByNameAndLastName(parameters[0], parameters[1]);
+//            List<UserEntity> byLastNameAndFirstName = userRepository.findByNameAndLastName(parameters[1],
+//                parameters[0]);
+//            result.addAll(byFirstNameAndLastName);
+//            result.addAll(byLastNameAndFirstName);
+//        } else if (parameters.length == 1) {
+//            List<UserEntity> byFirstName = userRepository.findByFirstName(parameters[0]);
+//            List<UserEntity> byLastName = userRepository.findByLastName(parameters[0]);
+//            result.addAll(byFirstName);
+//            result.addAll(byLastName);
+//        } else {
+//            throw new LemonBankException("Count searchParameters < 1 or > 2", ErrorType.SERVER_ERROR);
+//        }
         return userMapper.toListUserResponseDto(result);
     }
 
